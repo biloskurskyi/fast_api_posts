@@ -10,7 +10,6 @@ POSTGRES_USER=fastapi_user
 POSTGRES_PASSWORD=fastapi_password           
 POSTGRES_DB=fastapi_db           
 DATABASE_URL=postgresql+asyncpg://fastapi_user:fastapi_password@db:5432/fastapi_db              
-      
 SECRET_KEY=your_secret_key          
 ALGORITHM=HS256        
 ACCESS_TOKEN_EXPIRE_MINUTES=30     
