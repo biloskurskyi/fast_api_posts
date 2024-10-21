@@ -3,13 +3,13 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from ..auth import get_current_user
 from ..comments.models import Comment
+from ..comments.schemas import CommentResponse
 from ..database import get_db
+from ..users.models import User
 from .models import Post
 from .schemas import PostCreate, PostResponse
-from ..users.models import User
-from ..auth import get_current_user
-from ..comments.schemas import CommentResponse
 
 router = APIRouter()
 
@@ -79,4 +79,3 @@ def get_comments_for_post(post_id: int, db: Session = Depends(get_db)):
 
     comments = db.query(Comment).filter(Comment.post_id == post_id, Comment.is_valid == True).all()
     return comments
-

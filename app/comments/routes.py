@@ -1,13 +1,15 @@
+import asyncio
+
+from better_profanity import profanity
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..users.models import User
-from ..posts.routes import Post
-from .schemas import CommentResponse, CommentCreate
+
 from ..auth import get_current_user
+from ..database import get_db
+from ..posts.routes import Post
+from ..users.models import User
 from .models import Comment
-from better_profanity import profanity
-import asyncio
+from .schemas import CommentCreate, CommentResponse
 
 router = APIRouter()
 
@@ -61,6 +63,7 @@ async def create_comment(comment: CommentCreate, db: Session = Depends(get_db),
         trigger_auto_reply(db, new_comment, post_owner, comment_owner)
 
     return new_comment
+
 
 @router.get("/{comment_id}", response_model=CommentResponse)
 def get_comment(comment_id: int, db: Session = Depends(get_db)):

@@ -1,9 +1,11 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, DateTime
+from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
 from ..database import Base
-from ..users.models import User
 from ..posts.models import Post
+from ..users.models import User
+
 
 class Comment(Base):
     __tablename__ = "comments"
@@ -16,6 +18,7 @@ class Comment(Base):
     owner = relationship("User", back_populates="comments")
     is_valid = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.current_date())
+
 
 Post.comments = relationship("Comment", back_populates="post", cascade="all, delete-orphan")
 User.comments = relationship("Comment", back_populates="owner", cascade="all, delete-orphan")

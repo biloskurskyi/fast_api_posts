@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from .users.routes import router as user_router
-from .database import engine, Base
-from .posts.routes import router as posts_router
+
 from .comments.routes import router as comments_router
+from .database import Base, engine
+from .posts.routes import router as posts_router
 from .statistic.routes import router as statistic_router
+from .users.routes import router as user_router
 
 app = FastAPI()
 
