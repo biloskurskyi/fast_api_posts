@@ -1,7 +1,8 @@
 # fast_api_posts    
 Test task using FastAPI to manage posts and comments, featuring user authentication, content moderation, and analytics, with optional AI-driven auto-reply functionality.          
          
-# Інструкція для запуску проекту     
+# Інструкція для запуску проекту   
+!Відео з поясненням роботи програми та тестів буде надіслано згодом!    
 Клонування репозиторію:     
 1. Скопіюйте репозиторій на свій локальний комп'ютер.      
 2. Створення .env файлу:    
@@ -12,8 +13,7 @@ POSTGRES_DB=fastapi_db
 DATABASE_URL=postgresql+asyncpg://fastapi_user:fastapi_password@db:5432/fastapi_db              
 SECRET_KEY=your_secret_key          
 ALGORITHM=HS256         
-ACCESS_TOKEN_EXPIRE_MINUTES=30     
-       
+ACCESS_TOKEN_EXPIRE_MINUTES=30      
 3.Запуск контейнерів:     
 Перейдіть до папки /fast_api_posts та виконайте команду:   
 docker-compose up --build       
