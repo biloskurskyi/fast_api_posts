@@ -14,7 +14,7 @@ DATABASE_URL=postgresql+asyncpg://fastapi_user:fastapi_password@db:5432/fastapi_
 SECRET_KEY=your_secret_key          
 ALGORITHM=HS256         
 ACCESS_TOKEN_EXPIRE_MINUTES=30      
-3.Запуск контейнерів:     
+3. Запуск контейнерів:     
 Перейдіть до папки /fast_api_posts та виконайте команду:   
 docker-compose up --build       
        
