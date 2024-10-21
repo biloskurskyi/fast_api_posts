@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func
 from ..database import get_db
 from ..users.models import User
 from ..posts.routes import Post
@@ -8,14 +7,37 @@ from .schemas import CommentResponse, CommentCreate
 from ..auth import get_current_user
 from .models import Comment
 from better_profanity import profanity
-from datetime import date
+import asyncio
 
 router = APIRouter()
 
 
+async def send_auto_reply(db: Session, comment: Comment, post_owner: User, comment_owner: User):
+    await asyncio.sleep(post_owner.time_for_auto_reply)
+
+    reply_text = ""
+    if post_owner.auto_reply_enabled and post_owner.auto_reply_text:
+        reply_text = f"{comment_owner.username}, {post_owner.auto_reply_text}"
+
+    auto_reply = Comment(
+        info=reply_text,
+        post_id=comment.post_id,
+        owner_id=post_owner.id,
+        is_valid=True
+    )
+
+    db.add(auto_reply)
+    db.commit()
+    db.refresh(auto_reply)
+
+
+def trigger_auto_reply(db: Session, comment: Comment, user: User, comment_owner: User):
+    asyncio.create_task(send_auto_reply(db, comment, user, comment_owner))
+
+
 @router.post("/", response_model=CommentResponse)
-def create_comment(comment: CommentCreate, db: Session = Depends(get_db),
-                   current_user: User = Depends(get_current_user)):
+async def create_comment(comment: CommentCreate, db: Session = Depends(get_db),
+                         current_user: User = Depends(get_current_user)):
     post = db.query(Post).filter(Post.id == comment.post_id).first()
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
@@ -31,8 +53,14 @@ def create_comment(comment: CommentCreate, db: Session = Depends(get_db),
     db.add(new_comment)
     db.commit()
     db.refresh(new_comment)
-    return new_comment
 
+    post_owner = db.query(User).filter(User.id == post.owner_id).first()
+    comment_owner = db.query(User).filter(User.id == current_user.id).first()
+
+    if post_owner.auto_reply_enabled and post_owner.auto_reply_text and is_valid:
+        trigger_auto_reply(db, new_comment, post_owner, comment_owner)
+
+    return new_comment
 
 @router.get("/{comment_id}", response_model=CommentResponse)
 def get_comment(comment_id: int, db: Session = Depends(get_db)):

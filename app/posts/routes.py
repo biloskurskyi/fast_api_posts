@@ -77,6 +77,6 @@ def get_comments_for_post(post_id: int, db: Session = Depends(get_db)):
     if post is None:
         raise HTTPException(status_code=404, detail="Post not found")
 
-    comments = db.query(Comment).filter(Comment.post_id == post_id).all()
+    comments = db.query(Comment).filter(Comment.post_id == post_id, Comment.is_valid == True).all()
     return comments
 
