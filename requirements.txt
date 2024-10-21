@@ -10,6 +10,8 @@ bcrypt==4.0.1
 passlib[bcrypt]
 better_profanity
 datetime
+pytest
+httpx
 
 # flake8
 # isort

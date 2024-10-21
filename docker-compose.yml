@@ -29,6 +29,21 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5864:5432"
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: test_runner
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONPATH=/app
+    command: pytest app/tests/
 #
 #  flake8:
 #    build:
