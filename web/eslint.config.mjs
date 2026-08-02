@@ -72,6 +72,7 @@ const NON_TRANSLATABLE_JSX_ATTRIBUTES = [
   "styleName",
   "style",
   "type",
+  "variant",
   "key",
   "id",
   "width",

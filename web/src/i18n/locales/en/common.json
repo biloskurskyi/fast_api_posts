@@ -18,5 +18,15 @@
   "menu": {
     "open": "Open menu",
     "close": "Close menu"
+  },
+  "actions": {
+    "retry": "Try again"
+  },
+  "pagination": {
+    "ariaLabel": "Pagination",
+    "pageSize": "Per page",
+    "page": "Page {{page}}",
+    "previous": "Previous",
+    "next": "Next"
   }
 }

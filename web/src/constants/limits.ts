@@ -1,3 +1,5 @@
+export const FEED_EXCERPT_MAX_LENGTH = 150;
+
 export const LIMITS = {
   username: { min: 3, max: 50, pattern: /^[A-Za-z0-9_.-]+$/ },
   password: { min: 8, max: 72, maxBytes: 72 },

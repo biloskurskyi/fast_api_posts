@@ -108,6 +108,9 @@ export const CredentialsForm = ({
       </FormField>
       <Button
         label={t(`${mode}.cta`)}
+        type="submit"
+        variant="primary"
+        isFullWidth
         isDisabled={!isDirty || isPending || isBlocked}
         isBusy={isPending}
       />

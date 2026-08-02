@@ -68,6 +68,16 @@
   }
 }
 
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
 @theme inline {
   --color-*: initial;
   --color-page: var(--raw-page);
@@ -126,6 +136,9 @@
   --container-settings: 680px;
   --container-statistics: 840px;
   --container-prose: 68ch;
+
+  --animate-*: initial;
+  --animate-skeleton: skeleton-pulse 1.4s ease-in-out infinite;
 
   --spacing-gutter: var(--raw-gutter);
   --spacing-btn-h: var(--raw-btn-h);

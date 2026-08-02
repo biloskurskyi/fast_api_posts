@@ -19,8 +19,8 @@ export const SessionExpiredToast = () => {
       <div className="pointer-events-auto">
         <Banner
           message={t("session.expired")}
-          dismissLabel={t("session.dismiss")}
-          onDismiss={dismissSessionExpiredNotice}
+          actionLabel={t("session.dismiss")}
+          onAction={dismissSessionExpiredNotice}
         />
       </div>
     </div>
