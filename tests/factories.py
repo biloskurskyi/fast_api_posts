@@ -33,8 +33,11 @@ def create_comment(
     owner: User,
     info: str = "Nice post",
     blocked_at: datetime | None = None,
+    created_at: datetime | None = None,
 ) -> Comment:
     comment = Comment(info=info, post_id=post.id, owner_id=owner.id, blocked_at=blocked_at)
+    if created_at is not None:
+        comment.created_at = created_at
     db.add(comment)
     db.commit()
     return comment

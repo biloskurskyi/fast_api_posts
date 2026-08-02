@@ -7,6 +7,7 @@ from app.api.routes import (
     post_comments,
     posts,
     sessions,
+    statistics,
     users,
 )
 
@@ -18,3 +19,4 @@ api_router.include_router(auto_reply_settings.router)
 api_router.include_router(posts.router)
 api_router.include_router(post_comments.router)
 api_router.include_router(comments.router)
+api_router.include_router(statistics.router)

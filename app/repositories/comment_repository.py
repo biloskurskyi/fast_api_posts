@@ -1,11 +1,13 @@
 from collections.abc import Sequence
+from datetime import date, timedelta
 from http import HTTPStatus
 
-from sqlalchemy import ColumnElement, or_, select
+from sqlalchemy import ColumnElement, Row, func, or_, select
 from sqlalchemy.orm import Session
 
 from app.core.errors import AppError, ErrorCode
 from app.models.comment import Comment
+from app.models.post import Post
 from app.models.user import User
 from app.schemas.pagination import Pagination
 
@@ -37,6 +39,26 @@ class CommentRepository:
             .order_by(Comment.created_at, Comment.id)
             .offset(pagination.skip)
             .limit(pagination.limit)
+        ).all()
+
+    def daily_breakdown(
+        self, owner: User, date_from: date, date_to: date
+    ) -> Sequence[Row[tuple[date, int, int]]]:
+        day = func.date(Comment.created_at).label("date")
+        return self.db.execute(
+            select(
+                day,
+                func.count(Comment.id).label("total_comments"),
+                func.count(Comment.blocked_at).label("blocked_comments"),
+            )
+            .join(Post, Post.id == Comment.post_id)
+            .where(
+                Post.owner_id == owner.id,
+                Comment.created_at >= date_from,
+                Comment.created_at < date_to + timedelta(days=1),
+            )
+            .group_by(day)
+            .order_by(day)
         ).all()
 
     def add(self, comment: Comment) -> None:

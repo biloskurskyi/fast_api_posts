@@ -17,7 +17,6 @@ class ErrorCode(str, Enum):
     POST_NOT_FOUND = "post_not_found"
     COMMENT_NOT_FOUND = "comment_not_found"
     FORBIDDEN = "forbidden"
-    INVALID_DATE_RANGE = "invalid_date_range"
 
 
 class AppError(Exception):
