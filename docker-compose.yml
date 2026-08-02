@@ -34,6 +34,38 @@ services:
       sh -c "alembic upgrade head &&
              uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.dev
+    container_name: fast_api_posts_web
+    environment:
+      API_ORIGIN: http://app:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      app:
+        condition: service_started
+
+  web-prod:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        API_ORIGIN: http://app:8000
+    container_name: fast_api_posts_web_prod
+    profiles:
+      - prod
+    ports:
+      - "3001:3000"
+    depends_on:
+      app:
+        condition: service_started
+
   tests:
     build:
       context: .

@@ -1,0 +1,18 @@
+{
+  "title": "Latest",
+  "actions": {
+    "newPost": "New post"
+  },
+  "row": {
+    "author": "User #{{id}}"
+  },
+  "empty": {
+    "title": "Nothing published yet.",
+    "description": "The first article on {{app}} could be yours."
+  },
+  "pastTheEnd": {
+    "title": "Nothing on this page.",
+    "description": "The feed has fewer posts than it had when this link was made.",
+    "action": "Back to the first page"
+  }
+}

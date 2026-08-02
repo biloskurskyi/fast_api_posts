@@ -1,0 +1,17 @@
+{
+  "validation_error": "Some of the details below were rejected. Check them and try again.",
+  "not_authenticated": "You need to be signed in to do that.",
+  "invalid_token": "Your session expired. Sign in again to continue.",
+  "inactive_user": "This account is deactivated.",
+  "invalid_credentials": "Wrong username or password.",
+  "username_taken": "That username is already taken.",
+  "forbidden": "This isn't yours to change.",
+  "post_not_found": "That post no longer exists.",
+  "comment_not_found": "That comment no longer exists.",
+  "payload_too_large": "That was too large to send.",
+  "internal_error": "Something went wrong on the server.",
+  "not_found": "That address doesn't exist.",
+  "method_not_allowed": "That address doesn't accept this action.",
+  "network_error": "Couldn't reach the server.",
+  "unknown_error": "Something went wrong."
+}

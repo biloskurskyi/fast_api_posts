@@ -1,0 +1,47 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.18.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run",
+    "audit:greps": "./scripts/audit-greps.sh",
+    "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm build && pnpm audit:greps"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "5.7.1",
+    "@tanstack/react-query": "5.101.4",
+    "axios": "1.19.0",
+    "date-fns": "4.4.0",
+    "i18next": "26.3.6",
+    "jwt-decode": "4.0.0",
+    "next": "16.2.12",
+    "radix-ui": "1.6.7",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-hook-form": "7.84.0",
+    "react-i18next": "17.0.11",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.4",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.2.12",
+    "eslint-plugin-boundaries": "7.1.0",
+    "eslint-plugin-i18next": "6.1.5",
+    "prettier": "3.9.6",
+    "prettier-plugin-tailwindcss": "0.8.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.65.0",
+    "vitest": "4.1.10"
+  }
+}

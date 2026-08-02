@@ -1,0 +1,29 @@
+{
+  "create": {
+    "title": "New post",
+    "cta": "Publish"
+  },
+  "edit": {
+    "title": "Edit post",
+    "cta": "Save changes"
+  },
+  "counter": "{{current}} / {{max}}",
+  "fields": {
+    "title": {
+      "label": "Title",
+      "placeholder": "A short, plain title"
+    },
+    "body": {
+      "label": "Body",
+      "placeholder": "Write your article…"
+    }
+  },
+  "actions": {
+    "cancel": "Cancel"
+  },
+  "forbidden": {
+    "title": "This post isn't yours",
+    "description": "Only its author can edit it.",
+    "action": "Back to the post"
+  }
+}

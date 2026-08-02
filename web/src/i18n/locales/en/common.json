@@ -1,0 +1,49 @@
+{
+  "app": {
+    "name": "Ledger"
+  },
+  "nav": {
+    "feed": "Feed",
+    "autoReply": "Auto-reply",
+    "statistics": "Statistics",
+    "ariaLabel": "Main navigation"
+  },
+  "health": {
+    "healthy": "Server healthy",
+    "unreachable": "Server unreachable"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "switchTo": "Switch to the {{theme}} theme"
+  },
+  "menu": {
+    "open": "Open menu",
+    "close": "Close menu"
+  },
+  "actions": {
+    "retry": "Try again",
+    "dismiss": "Dismiss"
+  },
+  "boundary": {
+    "backToFeed": "Back to the feed",
+    "notFound": {
+      "title": "Page not found",
+      "description": "That address doesn't exist. The link may be wrong, or the page may have moved."
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "This page couldn't be displayed."
+    }
+  },
+  "notices": {
+    "postDeleted": "Post deleted."
+  },
+  "pagination": {
+    "ariaLabel": "Pagination",
+    "pageSize": "Per page",
+    "page": "Page {{page}}",
+    "previous": "Previous",
+    "next": "Next"
+  }
+}
