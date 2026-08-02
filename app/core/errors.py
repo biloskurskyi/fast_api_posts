@@ -21,17 +21,34 @@ class ErrorCode(str, Enum):
 
 
 class AppError(Exception):
-    def __init__(self, code: ErrorCode, message: str, status_code: int) -> None:
+    def __init__(
+        self,
+        code: ErrorCode,
+        message: str,
+        status_code: int,
+        headers: dict[str, str] | None = None,
+    ) -> None:
         super().__init__(message)
         self.code = code
         self.message = message
         self.status_code = status_code
+        self.headers = headers
 
 
-def error_response(status_code: int, code: str, message: str) -> JSONResponse:
+def unauthenticated(code: ErrorCode, message: str) -> AppError:
+    return AppError(code, message, HTTPStatus.UNAUTHORIZED, {"WWW-Authenticate": "Bearer"})
+
+
+def error_response(
+    status_code: int,
+    code: str,
+    message: str,
+    headers: dict[str, str] | None = None,
+) -> JSONResponse:
     return JSONResponse(
         status_code=status_code,
         content={"error": {"code": code, "message": message}},
+        headers=headers,
     )
 
 
@@ -42,7 +59,7 @@ def format_validation_errors(exc: RequestValidationError) -> str:
 
 
 async def handle_app_error(request: Request, exc: AppError) -> JSONResponse:
-    return error_response(exc.status_code, exc.code.value, exc.message)
+    return error_response(exc.status_code, exc.code.value, exc.message, exc.headers)
 
 
 async def handle_validation_error(request: Request, exc: RequestValidationError) -> JSONResponse:

@@ -48,7 +48,7 @@ def engine(database_url: str) -> Generator[Engine, None, None]:
 def db(engine: Engine) -> Generator[Session, None, None]:
     connection = engine.connect()
     transaction = connection.begin()
-    session = sessionmaker(bind=connection)()
+    session = sessionmaker(bind=connection, join_transaction_mode="create_savepoint")()
 
     yield session
 
