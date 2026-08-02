@@ -1,11 +1,13 @@
 "use client";
 
+import { useAuth } from "@/auth/useAuth";
 import { FEED_PAGINATION, FIRST_PAGE } from "@/constants/pagination";
 import { usePostQueries } from "@/hooks/queries/usePostQueries";
 import { usePaginationParams } from "@/hooks/shared/usePaginationParams";
 import { toPosts } from "@/mappers/post.mapper";
 
 export const useFeedScreen = () => {
+  const { isAuthenticated } = useAuth();
   const { page, pageSize, goToPage, selectPageSize } =
     usePaginationParams(FEED_PAGINATION);
   const { postList } = usePostQueries({ page, pageSize });
@@ -15,6 +17,7 @@ export const useFeedScreen = () => {
   const isFirstPage = page === FIRST_PAGE;
 
   return {
+    canCreatePost: isAuthenticated,
     posts,
     isLoading: postList.isPending,
     isBusy: postList.isPlaceholderData,

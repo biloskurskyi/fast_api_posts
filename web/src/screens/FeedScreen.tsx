@@ -9,6 +9,7 @@ import { PaginationControls } from "@/parts/pagination/PaginationControls";
 
 export const FeedScreen = () => {
   const {
+    canCreatePost,
     posts,
     isLoading,
     isBusy,
@@ -28,7 +29,7 @@ export const FeedScreen = () => {
   } = useFeedScreen();
 
   return (
-    <FeedLayout>
+    <FeedLayout canCreatePost={canCreatePost}>
       {isLoading ? <PostFeedSkeleton /> : null}
       <ApiErrorBanner error={error} onRetry={retry} />
       {isListVisible ? (

@@ -4,7 +4,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { ActionPill } from "@/components/ActionPill";
+import { ActionPillLink } from "@/components/ActionPillLink";
 import { Surface } from "@/components/Surface";
+import { ROUTES } from "@/constants/routes";
 import type { ApiError } from "@/errors/apiError.types";
 import { ApiErrorBanner } from "@/parts/feedback/ApiErrorBanner";
 import { ConfirmDeleteDialog } from "@/parts/modals/ConfirmDeleteDialog";
@@ -37,6 +39,10 @@ export const PostDetailPanel = ({
         </p>
         {post.isMine ? (
           <div className="flex flex-wrap gap-2">
+            <ActionPillLink
+              href={ROUTES.editPost(post.id)}
+              label={t("actions.edit")}
+            />
             <ActionPill
               label={t("actions.delete")}
               isDisabled={isConfirmingDelete || isDeleting}

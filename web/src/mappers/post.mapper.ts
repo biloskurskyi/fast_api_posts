@@ -1,5 +1,5 @@
 import { FEED_EXCERPT_MAX_LENGTH } from "@/constants/limits";
-import type { Post, PostDetail, PostDto } from "@/types/post";
+import type { Post, PostDetail, PostDto, PostWrite } from "@/types/post";
 import { toExcerpt } from "@/utils/excerpt";
 import { isOwnedBy } from "@/utils/ownership";
 
@@ -18,4 +18,9 @@ export const toPostDetail = (dto: PostDto, viewerId: number | null): PostDetail 
   content: dto.content,
   ownerId: dto.owner_id,
   isMine: isOwnedBy(dto.owner_id, viewerId),
+});
+
+export const mapPostToFormData = (post: PostDetail | null): PostWrite => ({
+  title: post?.title ?? "",
+  content: post?.content ?? "",
 });

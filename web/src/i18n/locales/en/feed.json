@@ -1,5 +1,8 @@
 {
   "title": "Latest",
+  "actions": {
+    "newPost": "New post"
+  },
   "row": {
     "author": "User #{{id}}"
   },

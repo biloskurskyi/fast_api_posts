@@ -1,24 +1,12 @@
 import { cn } from "@/utils/cn";
 
-import { FOCUS_RING } from "./controlStyles";
-
-const VARIANT_STYLES = {
-  primary:
-    "bg-accent text-on-accent shadow-e1 hover:bg-accent-hover hover:shadow-e2 active:shadow-e1 font-medium",
-  secondary: "border-border text-text hover:bg-hover-tint border",
-  danger: "bg-blocked-fg text-on-accent shadow-e1 hover:shadow-e2 active:shadow-e1 font-medium",
-} as const;
-
-const SIZE_STYLES = {
-  default: "h-btn-h",
-  touch: "min-h-touch",
-} as const;
+import { BUTTON_BASE, BUTTON_SIZES, BUTTON_VARIANTS, FOCUS_RING } from "./controlStyles";
 
 type ButtonProps = {
   label: string;
   type: "submit" | "button";
-  variant: keyof typeof VARIANT_STYLES;
-  size?: keyof typeof SIZE_STYLES;
+  variant: keyof typeof BUTTON_VARIANTS;
+  size?: keyof typeof BUTTON_SIZES;
   isFullWidth: boolean;
   isDisabled: boolean;
   isBusy: boolean;
@@ -41,9 +29,9 @@ export const Button = ({
     aria-busy={isBusy}
     onClick={onClick}
     className={cn(
-      "px-btn-px text-ui rounded-md transition-colors duration-120",
-      SIZE_STYLES[size],
-      VARIANT_STYLES[variant],
+      BUTTON_BASE,
+      BUTTON_SIZES[size],
+      BUTTON_VARIANTS[variant],
       isFullWidth ? "w-full" : "w-full md:w-auto",
       "disabled:pointer-events-none disabled:opacity-45",
       FOCUS_RING,

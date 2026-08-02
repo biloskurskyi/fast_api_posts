@@ -19,3 +19,10 @@ export type PostDetail = {
   ownerId: number;
   isMine: boolean;
 };
+
+export type PostWrite = {
+  title: string;
+  content: string;
+};
+
+export type PostEditorMode = "create" | "edit";

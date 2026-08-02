@@ -16,14 +16,9 @@ import { usePaginationParams } from "@/hooks/shared/usePaginationParams";
 import { toComments } from "@/mappers/comment.mapper";
 import { toPostDetail } from "@/mappers/post.mapper";
 import type { CommentWrite } from "@/types/comment";
+import { UNRESOLVED_POST_ID, toPostId } from "@/utils/postId";
 
-const UNRESOLVED_POST_ID = 0;
 const FIRST_COMPOSER_KEY = 0;
-
-const toPostId = (value: string | string[] | undefined): number => {
-  const postId = Number(value);
-  return Number.isInteger(postId) && postId > 0 ? postId : UNRESOLVED_POST_ID;
-};
 
 export const usePostScreen = () => {
   const router = useRouter();

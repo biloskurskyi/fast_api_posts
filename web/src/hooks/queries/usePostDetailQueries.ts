@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { postApi } from "@/api/postApi";
 import type { ApiError } from "@/errors/apiError.types";
-import type { PostDto } from "@/types/post";
+import type { PostDto, PostWrite } from "@/types/post";
 
 import { postKeys } from "./postKeys";
 
@@ -22,6 +22,16 @@ export const usePostDetailQueries = ({ postId, isEnabled }: PostDetailQueriesOpt
     enabled: isEnabled,
   });
 
+  const updatePost = useMutation<PostDto, ApiError, PostWrite>({
+    mutationFn: (body) => postApi.update(postId, body),
+    onSuccess: async () => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: postKeys.detail(postId) }),
+        queryClient.invalidateQueries({ queryKey: postKeys.lists() }),
+      ]);
+    },
+  });
+
   const deletePost = useMutation<void, ApiError, void>({
     mutationFn: () => postApi.remove(postId),
     onSuccess: async () => {
@@ -30,5 +40,5 @@ export const usePostDetailQueries = ({ postId, isEnabled }: PostDetailQueriesOpt
     },
   });
 
-  return { postDetail, deletePost };
+  return { postDetail, updatePost, deletePost };
 };
