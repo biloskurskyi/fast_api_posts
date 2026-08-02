@@ -51,6 +51,21 @@ services:
       app:
         condition: service_started
 
+  web-prod:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        API_ORIGIN: http://app:8000
+    container_name: fast_api_posts_web_prod
+    profiles:
+      - prod
+    ports:
+      - "3001:3000"
+    depends_on:
+      app:
+        condition: service_started
+
   tests:
     build:
       context: .

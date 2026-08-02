@@ -11,6 +11,8 @@ import { DailyStatisticsCardList } from "./DailyStatisticsCardList";
 import { DailyStatisticsTable } from "./DailyStatisticsTable";
 import { StatisticsLegend } from "./StatisticsLegend";
 
+const SKELETON_LINE_COUNT = 6;
+
 type DailyStatisticsResultsProps = {
   statistics: DailyStatistics | null;
   isLoading: boolean;
@@ -25,7 +27,7 @@ export const DailyStatisticsResults = ({
   if (isLoading) {
     return (
       <Surface>
-        <SkeletonText lineCount={6} />
+        <SkeletonText lineCount={SKELETON_LINE_COUNT} />
       </Surface>
     );
   }

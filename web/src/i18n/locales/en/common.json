@@ -25,6 +25,17 @@
     "retry": "Try again",
     "dismiss": "Dismiss"
   },
+  "boundary": {
+    "backToFeed": "Back to the feed",
+    "notFound": {
+      "title": "Page not found",
+      "description": "That address doesn't exist. The link may be wrong, or the page may have moved."
+    },
+    "error": {
+      "title": "Something went wrong",
+      "description": "This page couldn't be displayed."
+    }
+  },
   "notices": {
     "postDeleted": "Post deleted."
   },

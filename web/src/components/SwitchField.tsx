@@ -19,7 +19,7 @@ export const SwitchField = ({
   isDisabled,
   onCheckedChange,
 }: SwitchFieldProps) => (
-  <div className="flex items-center justify-between gap-4">
+  <div className="min-h-touch flex items-center justify-between gap-4">
     <label htmlFor={id} className="text-text text-meta font-medium">
       {label}
     </label>

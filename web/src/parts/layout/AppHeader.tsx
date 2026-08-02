@@ -31,7 +31,9 @@ export const AppHeader = () => {
           <span className="hidden md:inline">
             <ServerHealthLabel />
           </span>
-          <ThemeToggle />
+          <span className="hidden md:inline">
+            <ThemeToggle />
+          </span>
           <span className="hidden md:inline">
             <SessionMenu />
           </span>

@@ -13,6 +13,7 @@ import { toNavigationItems } from "@/constants/navigation";
 import { SessionMenu } from "@/parts/auth/SessionMenu";
 
 import { ServerHealthLabel } from "./ServerHealthLabel";
+import { ThemeToggle } from "./ThemeToggle";
 
 export const MobileNavigationMenu = () => {
   const { t } = useTranslation();
@@ -50,6 +51,7 @@ export const MobileNavigationMenu = () => {
             ))}
           </nav>
           <SessionMenu onAfterAction={closeMenu} />
+          <ThemeToggle onAfterToggle={closeMenu} />
           <ServerHealthLabel />
         </Popover.Content>
       </Popover.Portal>

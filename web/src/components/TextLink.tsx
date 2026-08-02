@@ -13,7 +13,10 @@ type TextLinkProps<T extends string> = {
 export const TextLink = <T extends string>({ href, label }: TextLinkProps<T>) => (
   <Link
     href={href}
-    className={cn("text-accent text-ui rounded-md hover:underline", FOCUS_RING)}
+    className={cn(
+      "text-accent text-ui min-h-touch inline-flex items-center rounded-md hover:underline md:min-h-0",
+      FOCUS_RING,
+    )}
   >
     {label}
   </Link>

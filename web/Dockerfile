@@ -5,6 +5,8 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 
 FROM node:24.18.1-alpine AS builder
+ARG API_ORIGIN
+ENV API_ORIGIN=${API_ORIGIN}
 RUN npm i -g pnpm@11.18.0
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules

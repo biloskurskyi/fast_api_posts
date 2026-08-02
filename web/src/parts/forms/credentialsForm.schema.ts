@@ -4,7 +4,7 @@ import { LIMITS } from "@/constants/limits";
 import type { Credentials } from "@/types/session";
 import { byteLength } from "@/utils/byteLength";
 
-export const CREDENTIAL_FIELD_NAMES = ["username", "password"] as const;
+const CREDENTIAL_FIELD_NAMES = ["username", "password"] as const;
 
 export type CredentialFieldName = (typeof CREDENTIAL_FIELD_NAMES)[number];
 

@@ -15,7 +15,10 @@ export const Banner = ({ message, actionLabel, onAction }: BannerProps) => (
       <button
         type="button"
         onClick={onAction}
-        className={cn("shrink-0 rounded-md font-medium underline", FOCUS_RING)}
+        className={cn(
+          "hover:bg-blocked-border min-h-touch inline-flex shrink-0 items-center rounded-md px-2 font-medium underline transition-colors duration-120 md:min-h-0",
+          FOCUS_RING,
+        )}
       >
         {actionLabel}
       </button>

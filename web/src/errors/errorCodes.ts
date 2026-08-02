@@ -16,6 +16,8 @@ export const BACKEND_ERROR_CODES = [
 
 export const CLIENT_ERROR_CODES = ["network_error", "unknown_error"] as const;
 
+export const UNMATCHED_ROUTE_ERROR_CODE = "not_found";
+
 export const SESSION_ENDING_ERROR_CODES = [
   "not_authenticated",
   "invalid_token",
