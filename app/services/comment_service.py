@@ -13,6 +13,7 @@ from app.repositories.comment_repository import CommentRepository
 from app.repositories.post_repository import PostRepository
 from app.schemas.comment import CommentWrite
 from app.schemas.pagination import Pagination
+from app.services.auto_reply_service import AutoReplyService
 from app.services.moderation_service import blocked_at_for
 
 
@@ -21,6 +22,7 @@ class CommentService:
         self.db = db
         self.comments = CommentRepository(db)
         self.posts = PostRepository(db)
+        self.auto_replies = AutoReplyService(db)
 
     def list(
         self, post_id: int, pagination: Pagination, viewer: User | None
@@ -32,7 +34,7 @@ class CommentService:
         return self.comments.find_or_fail(comment_id, viewer)
 
     def create(self, owner: User, post_id: int, data: CommentWrite) -> Comment:
-        self.posts.find_or_fail(post_id)
+        post = self.posts.find_or_fail(post_id)
         comment = Comment(
             info=data.info,
             post_id=post_id,
@@ -40,6 +42,8 @@ class CommentService:
             blocked_at=blocked_at_for(data.info),
         )
         self.comments.add(comment)
+        if comment.blocked_at is None:
+            self.auto_replies.schedule(post, comment)
         self.db.commit()
         return comment
 
