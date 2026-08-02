@@ -1,16 +1,18 @@
 from fastapi import FastAPI
 
-from .comments.routes import router as comments_router
-from .database import Base, engine
-from .posts.routes import router as posts_router
-from .statistic.routes import router as statistic_router
-from .users.routes import router as user_router
+from app.api.router import api_router
+from app.core.errors import register_exception_handlers
 
-app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
+def create_app() -> FastAPI:
+    app = FastAPI(
+        title="Posts API",
+        description="Posts, comments, moderation, auto-reply and comment statistics.",
+        version="2.0.0",
+    )
+    register_exception_handlers(app)
+    app.include_router(api_router)
+    return app
 
-app.include_router(user_router, prefix="/users", tags=["users"])
-app.include_router(posts_router, prefix="/posts", tags=["posts"])
-app.include_router(comments_router, prefix="/comments", tags=["comments"])
-app.include_router(statistic_router, prefix="/statistic", tags=["statistic"])
+
+app = create_app()

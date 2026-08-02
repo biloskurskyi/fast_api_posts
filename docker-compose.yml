@@ -1,70 +1,54 @@
-version: '3.8'
-
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: fastapi_app
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env
-    depends_on:
-      - db
-    volumes:
-      - .:/app
-    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-
-
-
   db:
-    image: postgres:13
-    container_name: postgres_db
+    image: postgres:16
+    container_name: fast_api_posts_db
     environment:
-      POSTGRES_USER: fastapi_user
-      POSTGRES_PASSWORD: fastapi_password
-      POSTGRES_DB: fastapi_db
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5864:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fast_api_posts_app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "alembic upgrade head &&
+             uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
 
   tests:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: test_runner
+    container_name: fast_api_posts_tests
+    profiles:
+      - test
     env_file:
       - .env
-    depends_on:
-      - db
     volumes:
       - .:/app
-    environment:
-      - PYTHONPATH=/app
-    command: pytest app/tests/
-#
-#  flake8:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: flake8
-#    volumes:
-#      - .:/app
-#    networks:
-#      - backend
-#    command: flake8 .
-#  isort:
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    container_name: isort
-#    volumes:
-#      - .:/app
-#    networks:
-#      - backend
-#    command: isort . --check-only
+    depends_on:
+      db:
+        condition: service_healthy
+    command: pytest
 
 volumes:
   postgres_data:
