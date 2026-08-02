@@ -362,3 +362,18 @@ def test_deleting_a_post_removes_its_comments(client: TestClient, db: Session) -
 
     assert response.status_code == 204
     assert db.scalars(select(Comment).where(Comment.post_id == post.id)).all() == []
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "/comments/99999999999999999999",
+        "/posts/99999999999999999999/comments",
+        "/posts/1/comments?skip=99999999999999999999",
+    ],
+)
+def test_out_of_range_integers_are_rejected(client: TestClient, url: str) -> None:
+    response = client.get(url)
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "validation_error"

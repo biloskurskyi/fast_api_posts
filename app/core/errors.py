@@ -1,3 +1,4 @@
+import logging
 from enum import Enum
 from http import HTTPStatus
 
@@ -5,6 +6,8 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+logger = logging.getLogger(__name__)
 
 
 class ErrorCode(str, Enum):
@@ -17,6 +20,8 @@ class ErrorCode(str, Enum):
     POST_NOT_FOUND = "post_not_found"
     COMMENT_NOT_FOUND = "comment_not_found"
     FORBIDDEN = "forbidden"
+    PAYLOAD_TOO_LARGE = "payload_too_large"
+    INTERNAL_ERROR = "internal_error"
 
 
 class AppError(Exception):
@@ -77,7 +82,17 @@ async def handle_http_error(request: Request, exc: StarletteHTTPException) -> JS
     )
 
 
+async def handle_unexpected_error(request: Request, exc: Exception) -> JSONResponse:
+    logger.exception("Unhandled error on %s %s", request.method, request.url.path)
+    return error_response(
+        HTTPStatus.INTERNAL_SERVER_ERROR,
+        ErrorCode.INTERNAL_ERROR.value,
+        "Internal server error",
+    )
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(AppError, handle_app_error)
     app.add_exception_handler(RequestValidationError, handle_validation_error)
     app.add_exception_handler(StarletteHTTPException, handle_http_error)
+    app.add_exception_handler(Exception, handle_unexpected_error)

@@ -183,3 +183,14 @@ def test_writes_require_authentication(client: TestClient, db: Session, method: 
 
     assert response.status_code == 401
     assert response.json()["error"]["code"] == "not_authenticated"
+
+
+@pytest.mark.parametrize(
+    "url",
+    ["/posts/99999999999999999999", "/posts?skip=99999999999999999999"],
+)
+def test_out_of_range_integers_are_rejected(client: TestClient, url: str) -> None:
+    response = client.get(url)
+
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "validation_error"

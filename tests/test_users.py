@@ -60,6 +60,8 @@ def test_privilege_fields_in_the_body_cannot_escalate(client: TestClient, db: Se
         {"username": "x" * 51, "password": PASSWORD},
         {"username": "has spaces", "password": PASSWORD},
         {"username": "shortpass", "password": "1234567"},
+        {"username": "longpass", "password": "x" * 73},
+        {"username": "multibyte", "password": "é" * 40},
         {"username": "nopass"},
         {"password": PASSWORD},
     ],

@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from app.api.router import api_router
 from app.core.errors import register_exception_handlers
+from app.core.limits import reject_oversized_body
 from app.workers.auto_reply_worker import auto_reply_lifespan
 
 
@@ -13,6 +14,7 @@ def create_app() -> FastAPI:
         lifespan=auto_reply_lifespan,
     )
     register_exception_handlers(app)
+    app.middleware("http")(reject_oversized_body)
     app.include_router(api_router)
     return app
 

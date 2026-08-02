@@ -1,3 +1,4 @@
+import secrets
 from typing import Annotated
 
 from fastapi import Depends
@@ -5,8 +6,10 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.core.errors import ErrorCode, unauthenticated
-from app.core.security import create_access_token, verify_password
+from app.core.security import create_access_token, hash_password, verify_password
 from app.repositories.user_repository import UserRepository
+
+UNKNOWN_USER_PASSWORD_HASH = hash_password(secrets.token_urlsafe())
 
 
 class SessionService:
@@ -15,7 +18,10 @@ class SessionService:
 
     def create(self, username: str, password: str) -> str:
         user = self.users.find_by_username(username)
-        if user is None or not verify_password(password, user.password_hash):
+        password_matches = verify_password(
+            password, user.password_hash if user else UNKNOWN_USER_PASSWORD_HASH
+        )
+        if user is None or not password_matches:
             raise unauthenticated(ErrorCode.INVALID_CREDENTIALS, "Incorrect username or password")
         if not user.is_active:
             raise unauthenticated(ErrorCode.INACTIVE_USER, "This account is deactivated")

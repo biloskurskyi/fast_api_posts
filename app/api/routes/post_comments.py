@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, Query, status
 from app.core.dependencies import get_current_user, get_viewer
 from app.models.user import User
 from app.schemas.comment import CommentResponse, CommentWrite
+from app.schemas.identifiers import ResourceId
 from app.schemas.pagination import Pagination
 from app.services.comment_service import CommentService
 
@@ -17,7 +18,7 @@ Comments = Annotated[CommentService, Depends()]
 
 @router.get("")
 def index(
-    post_id: int,
+    post_id: ResourceId,
     pagination: Annotated[Pagination, Query()],
     viewer: Viewer,
     service: Comments,
@@ -30,6 +31,6 @@ def index(
 
 @router.post("", status_code=status.HTTP_201_CREATED)
 def store(
-    post_id: int, data: CommentWrite, user: CurrentUser, service: Comments
+    post_id: ResourceId, data: CommentWrite, user: CurrentUser, service: Comments
 ) -> CommentResponse:
     return CommentResponse.model_validate(service.create(user, post_id, data))

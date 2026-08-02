@@ -6,6 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.models.comment import Comment
 from app.models.scheduled_reply import ScheduledReply
 from app.models.user import User
@@ -358,3 +359,21 @@ def test_a_delivered_reply_is_visible_to_readers(client: TestClient, db: Session
         "Great read",
         f"{commenter.username}, {REPLY_TEXT}",
     ]
+
+
+def test_a_delivery_cycle_claims_at_most_one_batch(
+    client: TestClient, db: Session, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(settings, "auto_reply_batch_size", 2)
+    author = configure_auto_reply(db, create_user(db, "author"))
+    post = create_post(db, author)
+    commenter = create_user(db, "commenter")
+    for index in range(3):
+        client.post(
+            f"/posts/{post.id}/comments",
+            json={"info": f"Great read {index}"},
+            headers=auth_headers(commenter),
+        )
+
+    assert AutoReplyService(db).deliver_due() == 2
+    assert AutoReplyService(db).deliver_due() == 1

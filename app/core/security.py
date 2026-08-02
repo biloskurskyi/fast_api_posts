@@ -5,6 +5,8 @@ import jwt
 
 from app.core.config import settings
 
+BCRYPT_MAX_PASSWORD_BYTES = 72
+
 
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()

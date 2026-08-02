@@ -4,6 +4,7 @@ from datetime import UTC, datetime
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 
+from app.core.config import settings
 from app.models.comment import Comment
 from app.models.post import Post
 from app.models.scheduled_reply import ScheduledReply
@@ -21,6 +22,7 @@ class ScheduledReplyRepository:
                 ScheduledReply.deliver_at <= datetime.now(UTC),
             )
             .order_by(ScheduledReply.deliver_at, ScheduledReply.id)
+            .limit(settings.auto_reply_batch_size)
             .with_for_update(skip_locked=True, of=ScheduledReply)
             .options(
                 selectinload(ScheduledReply.comment).options(
