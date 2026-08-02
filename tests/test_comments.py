@@ -155,6 +155,23 @@ def test_a_clean_edit_clears_the_block(client: TestClient, db: Session) -> None:
     assert blocked.info == "Rephrased politely"
 
 
+def test_an_edit_cannot_move_a_comment_to_another_post(client: TestClient, db: Session) -> None:
+    post = create_post(db, create_user(db, "author"))
+    other_post = create_post(db, create_user(db, "stranger"), title="Other")
+    commenter = create_user(db, "commenter")
+    comment = create_comment(db, post, commenter)
+
+    response = client.put(
+        f"/comments/{comment.id}",
+        json={"info": "Edited", "post_id": other_post.id, "owner_id": 999},
+        headers=auth_headers(commenter),
+    )
+
+    assert response.status_code == 200
+    assert response.json()["post_id"] == post.id
+    assert response.json()["owner_id"] == commenter.id
+
+
 def test_an_edit_into_profanity_blocks_a_clean_comment(client: TestClient, db: Session) -> None:
     post = create_post(db, create_user(db, "author"))
     commenter = create_user(db, "commenter")

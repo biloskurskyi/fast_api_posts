@@ -150,6 +150,56 @@ def test_a_comment_schedules_exactly_one_job(client: TestClient, db: Session) ->
     assert jobs[0].delivered_at is None
 
 
+def test_editing_a_comment_schedules_nothing(client: TestClient, db: Session) -> None:
+    post = create_post(db, configure_auto_reply(db, create_user(db, "author")))
+    commenter = create_user(db, "commenter")
+    comment = create_comment(db, post, commenter)
+
+    response = client.put(
+        f"/comments/{comment.id}",
+        json={"info": "Edited after the fact"},
+        headers=auth_headers(commenter),
+    )
+
+    assert response.status_code == 200
+    assert jobs_for(db, post.id) == []
+
+
+def test_the_post_owner_commenting_on_their_own_post_is_replied_to(
+    client: TestClient, db: Session
+) -> None:
+    author = configure_auto_reply(db, create_user(db, "author"))
+    post = create_post(db, author)
+
+    client.post(
+        f"/posts/{post.id}/comments",
+        json={"info": "Replying to myself"},
+        headers=auth_headers(author),
+    )
+
+    assert len(jobs_for(db, post.id)) == 1
+    assert AutoReplyService(db).deliver_due() == 1
+    replies = [c for c in replies_on(db, post.id, author) if c.info != "Replying to myself"]
+    assert len(replies) == 1
+    assert replies[0].info == f"{author.username}, {REPLY_TEXT}"
+
+
+def test_deleting_a_post_removes_its_pending_jobs(client: TestClient, db: Session) -> None:
+    author = configure_auto_reply(db, create_user(db, "author"), delay=3600)
+    post = create_post(db, author)
+    client.post(
+        f"/posts/{post.id}/comments",
+        json={"info": "Great read"},
+        headers=auth_headers(create_user(db, "commenter")),
+    )
+    assert len(jobs_for(db, post.id)) == 1
+
+    response = client.delete(f"/posts/{post.id}", headers=auth_headers(author))
+
+    assert response.status_code == 204
+    assert jobs_for(db, post.id) == []
+
+
 def test_an_unconfigured_owner_schedules_nothing(client: TestClient, db: Session) -> None:
     post = create_post(db, create_user(db, "author"))
 

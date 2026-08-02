@@ -1,101 +1,223 @@
-# fast_api_posts    
-Test task using FastAPI to manage posts and comments, featuring user authentication, content moderation, and analytics, with optional AI-driven auto-reply functionality.          
-         
-# Інструкція для запуску проекту   
-!Відео з поясненням роботи програми та тестів буде надіслано згодом!    
-Клонування репозиторію:     
-1. Скопіюйте репозиторій на свій локальний комп'ютер.      
-2. Створення .env файлу:    
-У папці app створіть файл .env та додайте в нього наступні змінні:       
-POSTGRES_USER=fastapi_user         
-POSTGRES_PASSWORD=fastapi_password           
-POSTGRES_DB=fastapi_db           
-DATABASE_URL=postgresql+asyncpg://fastapi_user:fastapi_password@db:5432/fastapi_db              
-SECRET_KEY=your_secret_key          
-ALGORITHM=HS256         
-ACCESS_TOKEN_EXPIRE_MINUTES=30      
-3. Запуск контейнерів:     
-Перейдіть до папки /fast_api_posts та виконайте команду:   
-docker-compose up --build       
-       
-# API endpoints:   
-      
-1. Реєстрація користувача   
-http://127.0.0.1:8000/users/register (POST)   
-Тіло запиту(json):   
-{   
-    "username": "string",      
-    "password": "string",       
-}     
-     
-2. Вхід користувача:    
-Адреса: http://127.0.0.1:8000/users/login (POST)     
-Тіло запиту(json):    
-{    
-    "username": "string",     
-    "password": "string"      
-}     
-      
-3. Створення поста      
-Адреса: http://127.0.0.1:8000/posts/ (POST)         
-Тіло запиту (json):    
-{     
-    "title": "string",           
-    "content": "string"         
-}     
-    
-4. Отримання поста за ID   
-Адреса: http://127.0.0.1:8000/posts/{post_id} (GET)     
-Де {post_id} - ID поста, який потрібно отримати.      
-   
-5. Отримання списку постів     
-Адреса: http://127.0.0.1:8000/posts/ (GET)       
-Параметри запиту:     
-      
-6. Оновлення поста       
-Адреса: http://127.0.0.1:8000/posts/{post_id} (PUT)         
-Тіло запиту (json):       
-{       
-    "title": "string",    
-    "content": "string"     
-}      
-Де {post_id} - ID поста, який потрібно оновити.      
-     
-7. Видалення поста       
-Адреса: http://127.0.0.1:8000/posts/{post_id} (DELETE)       
-Де {post_id} - ID поста, який потрібно видалити.      
-            
-8. Отримання коментарів для поста         
-Адреса: http://127.0.0.1:8000/posts/{post_id}/comments (GET)         
-Де {post_id} - ID поста, для якого потрібно отримати коментарі.     
-        
-9. Створення коментаря     
-Адреса: http://127.0.0.1:8000/comments/ (POST)     
-Тіло запиту (json):     
-{     
-"info": "string",     
-"post_id": "integer"     
-}     
-     
-10. Отримання коментаря за ID     
-Адреса: http://127.0.0.1:8000/comments/{comment_id} (GET)     
-Де {comment_id} - ID коментаря, який потрібно отримати.     
-     
-11. Оновлення коментаря     
-Адреса: http://127.0.0.1:8000/comments/{comment_id} (PUT)     
-Тіло запиту (json):     
-{     
-"info": "string"     
-}     
-Де {comment_id} - ID коментаря, який потрібно оновити.     
-     
-12. Видалення коментаря     
-Адреса: http://127.0.0.1:8000/comments/{comment_id} (DELETE)     
-Де {comment_id} - ID коментаря, який потрібно видалити.      
-           
-13. Отримання щоденного аналізу коментарів           
-Адреса: http://127.0.0.1:8000/comments/daily-breakdown?date_from=2023-01-01&date_to=2025-12-31 (GET)           
-Параметри запиту:            
-date_from: "YYYY-MM-DD" (дата початку періоду)          
-date_to: "YYYY-MM-DD" (дата закінчення періоду)      
-           
+# fast_api_posts
+
+API для постів і коментарів на FastAPI: реєстрація та автентифікація користувачів, публікація постів,
+коментування з модерацією ненормативної лексики, відкладена автовідповідь від автора поста
+та щоденна статистика коментарів.
+
+Стек: FastAPI · SQLAlchemy 2 · PostgreSQL 16 · Pydantic 2 · Alembic · Docker Compose.
+
+## Запуск
+
+Проєкт запускається **тільки через Docker Compose**.
+
+1. Скопіюйте репозиторій на свій локальний комп'ютер.
+2. Створіть файл `.env` у корені проєкту на основі шаблона:
+
+   ```sh
+   cp .env.example .env
+   ```
+
+   Далі підставте власні значення замість плейсхолдерів — насамперед `POSTGRES_PASSWORD`
+   і `SECRET_KEY`. Усі ключі вже перелічені в `.env.example`.
+
+   > `DATABASE_URL` має використовувати схему `postgresql+psycopg://` — драйвер psycopg 3.
+
+3. Підніміть контейнери:
+
+   ```sh
+   docker compose up --build
+   ```
+
+Міграції Alembic застосовуються автоматично при старті застосунку.
+
+- API — http://127.0.0.1:8000
+- Swagger — http://127.0.0.1:8000/docs
+- PostgreSQL — на хост-порті **5864**
+
+### Тести та лінтер
+
+```sh
+docker compose run --rm tests
+docker compose --profile lint run --rm lint
+```
+
+## Автентифікація
+
+`POST /sessions` повертає JWT. Далі токен передається у заголовку:
+
+```
+Authorization: Bearer <access_token>
+```
+
+У Swagger це кнопка **Authorize**.
+
+## Формат помилок
+
+Усі помилки повертаються з машинозчитуваним кодом:
+
+```json
+{"error": {"code": "post_not_found", "message": "Post not found"}}
+```
+
+Коди: `validation_error`, `not_authenticated`, `invalid_token`, `invalid_credentials`,
+`inactive_user`, `username_taken`, `post_not_found`, `comment_not_found`, `forbidden`.
+
+## Endpoints
+
+Позначка «авт.» означає, що потрібен токен.
+
+### Службові
+
+| Метод | Адреса | Доступ | Опис |
+|---|---|---|---|
+| GET | `/health` | публічно | Перевірка стану сервісу |
+
+### Користувачі та сесії
+
+| Метод | Адреса | Доступ | Опис |
+|---|---|---|---|
+| POST | `/users` | публічно | Реєстрація користувача → 201 |
+| POST | `/sessions` | публічно | Вхід, видача JWT → 200 |
+
+Реєстрація, тіло (JSON):
+
+```json
+{
+    "username": "string",
+    "password": "string"
+}
+```
+
+`username` — 3–50 символів, дозволені `A-Z a-z 0-9 _ . -`; `password` — 8–128 символів.
+
+Вхід, тіло — **form-data** (`application/x-www-form-urlencoded`), поля `username` і `password`.
+Саме такий формат використовує кнопка Authorize у Swagger. Відповідь:
+
+```json
+{
+    "access_token": "string",
+    "token_type": "bearer"
+}
+```
+
+### Налаштування автовідповіді
+
+| Метод | Адреса | Доступ | Опис |
+|---|---|---|---|
+| GET | `/users/me/auto-reply-settings` | авт. | Поточні налаштування |
+| PUT | `/users/me/auto-reply-settings` | авт. | Оновити налаштування |
+
+Тіло (JSON):
+
+```json
+{
+    "auto_reply_enabled": true,
+    "auto_reply_text": "string",
+    "auto_reply_delay_seconds": 0
+}
+```
+
+`auto_reply_text` — до 500 символів, `auto_reply_delay_seconds` — 0–86400.
+Якщо `auto_reply_enabled` = `true`, текст не може бути порожнім.
+
+Коли автовідповідь увімкнено, кожен новий коментар до поста цього користувача створює відкладене
+завдання. Через `auto_reply_delay_seconds` секунд фоновий воркер публікує відповідь від імені
+автора поста у форматі `"{username_коментатора}, {auto_reply_text}"`. Завдання зберігаються в БД,
+тому переживають перезапуск застосунку.
+
+### Пости
+
+| Метод | Адреса | Доступ | Опис |
+|---|---|---|---|
+| GET | `/posts` | публічно | Список постів |
+| POST | `/posts` | авт. | Створення поста → 201 |
+| GET | `/posts/{post_id}` | публічно | Пост за ID |
+| PUT | `/posts/{post_id}` | авт., власник | Повне оновлення поста |
+| DELETE | `/posts/{post_id}` | авт., власник | Видалення поста → 204 |
+
+Параметри списку: `skip` (≥ 0, за замовчуванням 0), `limit` (1–100, за замовчуванням 10).
+Порядок — від найновіших.
+
+Тіло створення та оновлення (JSON):
+
+```json
+{
+    "title": "string",
+    "content": "string"
+}
+```
+
+`title` — 1–200 символів, `content` — 1–10000. Автор береться з токена й не може бути
+підмінений через тіло запиту. Видалення поста каскадно видаляє його коментарі.
+
+### Коментарі
+
+| Метод | Адреса | Доступ | Опис |
+|---|---|---|---|
+| GET | `/posts/{post_id}/comments` | публічно | Коментарі поста |
+| POST | `/posts/{post_id}/comments` | авт. | Створення коментаря → 201 |
+| GET | `/comments/{comment_id}` | публічно | Коментар за ID |
+| PUT | `/comments/{comment_id}` | авт., власник | Оновлення коментаря |
+| DELETE | `/comments/{comment_id}` | авт., власник | Видалення коментаря → 204 |
+
+Параметри списку: `skip` і `limit`, як у постів. Порядок — від найстаріших.
+
+Тіло створення та оновлення (JSON):
+
+```json
+{
+    "info": "string"
+}
+```
+
+`info` — 1–2000 символів. Пост визначається адресою, а не тілом запиту.
+
+Відповідь:
+
+```json
+{
+    "id": 1,
+    "info": "string",
+    "post_id": 1,
+    "owner_id": 1,
+    "blocked_at": null,
+    "created_at": "2026-08-02T12:30:00.123456Z"
+}
+```
+
+### Модерація
+
+Кожен коментар перевіряється на ненормативну лексику при створенні та при кожному редагуванні.
+Заблокований коментар зберігається повністю, а в полі `blocked_at` проставляється час блокування.
+
+Заблоковані коментарі не показуються стороннім читачам, але **автор завжди бачить власний
+коментар разом із `blocked_at`** — блокування не є прихованим. Автор може відредагувати свій
+коментар: якщо новий текст чистий, блокування знімається.
+
+Автовідповідь проходить ту саму модерацію, що й звичайний коментар.
+
+### Статистика
+
+| Метод | Адреса | Доступ | Опис |
+|---|---|---|---|
+| GET | `/statistics/daily-comments` | авт. | Щоденний розподіл коментарів |
+
+Приклад:
+
+```
+GET /statistics/daily-comments?date_from=2026-01-01&date_to=2026-08-02
+```
+
+Параметри `date_from` і `date_to` обов'язкові, формат `YYYY-MM-DD`. Обидві межі включно.
+`date_from` не може бути пізнішим за `date_to`, а `date_to` не може бути в майбутньому —
+інакше 422.
+
+Статистика рахується **лише за коментарями до постів того користувача, який робить запит**.
+Дні без коментарів у відповіді відсутні. Відповідь:
+
+```json
+[
+    {"date": "2026-08-01", "total_comments": 12, "blocked_comments": 2},
+    {"date": "2026-08-02", "total_comments": 5, "blocked_comments": 0}
+]
+```

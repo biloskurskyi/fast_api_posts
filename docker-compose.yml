@@ -50,5 +50,16 @@ services:
         condition: service_healthy
     command: pytest
 
+  lint:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fast_api_posts_lint
+    profiles:
+      - lint
+    volumes:
+      - .:/app
+    command: ruff check .
+
 volumes:
   postgres_data:
