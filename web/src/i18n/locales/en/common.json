@@ -1,0 +1,22 @@
+{
+  "app": {
+    "name": "Ledger"
+  },
+  "nav": {
+    "feed": "Feed",
+    "ariaLabel": "Main navigation"
+  },
+  "health": {
+    "healthy": "Server healthy",
+    "unreachable": "Server unreachable"
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "switchTo": "Switch to the {{theme}} theme"
+  },
+  "menu": {
+    "open": "Open menu",
+    "close": "Close menu"
+  }
+}
