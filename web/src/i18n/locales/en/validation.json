@@ -3,5 +3,14 @@
   "usernameLength": "Use between 3 and 50 characters.",
   "usernamePattern": "Use letters, digits, dot, dash and underscore only.",
   "passwordLength": "Use between 8 and 72 characters.",
-  "passwordBytes": "That password is too long once encoded. Try a shorter one."
+  "passwordBytes": "That password is too long once encoded. Try a shorter one.",
+  "commentRequired": "Write something first.",
+  "commentLength": "Comments are limited to 2000 characters.",
+  "autoReplyTextRequired": "Reply text is required while automatic reply is on.",
+  "autoReplyTextLength": "Reply text must be 500 characters or fewer.",
+  "autoReplyDelayRange": "Choose a delay between 0 and 24 hours.",
+  "statisticsDateRequired": "Both dates are required.",
+  "statisticsFutureDate": "The end date can't be in the future.",
+  "statisticsDateOrder": "The start date must be on or before the end date.",
+  "statisticsRangeTooLong": "Choose a range of 90 days or fewer."
 }

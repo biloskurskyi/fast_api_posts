@@ -11,3 +11,11 @@ export type Post = {
   ownerId: number;
   excerpt: string;
 };
+
+export type PostDetail = {
+  id: number;
+  title: string;
+  content: string;
+  ownerId: number;
+  isMine: boolean;
+};

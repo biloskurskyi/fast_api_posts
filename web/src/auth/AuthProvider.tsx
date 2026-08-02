@@ -21,19 +21,21 @@ type AuthProviderProps = {
   children: ReactNode;
 };
 
-const readServerAccessToken = (): string | null => null;
+const readServerAccessToken = (): string | undefined => undefined;
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [hasSessionExpiredNotice, setHasSessionExpiredNotice] = useState(false);
 
-  const token = useSyncExternalStore(
+  const token = useSyncExternalStore<string | null | undefined>(
     subscribeToAccessToken,
     readAccessToken,
     readServerAccessToken,
   );
-  const claims = token === null ? null : decodeAccessToken(token);
+  const isSessionResolved = token !== undefined;
+  const claims =
+    token === undefined || token === null ? null : decodeAccessToken(token);
   const expiresAt = claims?.expiresAt ?? null;
 
   useEffect(
@@ -72,6 +74,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       value={{
         userId: claims?.userId ?? null,
         isAuthenticated: claims !== null,
+        isSessionResolved,
         hasSessionExpiredNotice,
         signIn,
         signOut,

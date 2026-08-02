@@ -5,10 +5,11 @@ import { Popover } from "radix-ui";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { useAuth } from "@/auth/useAuth";
 import { FOCUS_RING } from "@/components/controlStyles";
 import { MenuIcon } from "@/components/MenuIcon";
 import { NavPill } from "@/components/NavPill";
-import { PUBLIC_NAV_ITEMS } from "@/constants/navigation";
+import { toNavigationItems } from "@/constants/navigation";
 import { SessionMenu } from "@/parts/auth/SessionMenu";
 
 import { ServerHealthLabel } from "./ServerHealthLabel";
@@ -16,6 +17,7 @@ import { ServerHealthLabel } from "./ServerHealthLabel";
 export const MobileNavigationMenu = () => {
   const { t } = useTranslation();
   const pathname = usePathname();
+  const { isAuthenticated } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const closeMenu = () => {
@@ -37,7 +39,7 @@ export const MobileNavigationMenu = () => {
           className="bg-raised shadow-e2 flex w-56 flex-col gap-2 rounded-lg p-3"
         >
           <nav aria-label={t("nav.ariaLabel")} className="flex flex-col gap-1">
-            {PUBLIC_NAV_ITEMS.map((item) => (
+            {toNavigationItems(isAuthenticated).map((item) => (
               <NavPill
                 key={item.href}
                 href={item.href}

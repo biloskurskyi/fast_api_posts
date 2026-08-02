@@ -8,21 +8,21 @@ import { PageSizeSelect } from "./PageSizeSelect";
 
 type PaginationControlsProps = {
   page: number;
-  pageSize: number;
   hasPrevious: boolean;
   hasNext: boolean;
   onPreviousPage: () => void;
   onNextPage: () => void;
-  onSelectPageSize: (pageSize: number) => void;
+  pageSize?: number;
+  onSelectPageSize?: (pageSize: number) => void;
 };
 
 export const PaginationControls = ({
   page,
-  pageSize,
   hasPrevious,
   hasNext,
   onPreviousPage,
   onNextPage,
+  pageSize,
   onSelectPageSize,
 }: PaginationControlsProps) => {
   const { t } = useTranslation();
@@ -32,7 +32,9 @@ export const PaginationControls = ({
       aria-label={t("pagination.ariaLabel")}
       className="flex flex-wrap items-center justify-between gap-4"
     >
-      <PageSizeSelect pageSize={pageSize} onSelect={onSelectPageSize} />
+      {pageSize === undefined || onSelectPageSize === undefined ? null : (
+        <PageSizeSelect pageSize={pageSize} onSelect={onSelectPageSize} />
+      )}
       <div className="flex flex-1 flex-wrap items-center justify-end gap-3">
         <span className="text-secondary text-meta">{t("pagination.page", { page })}</span>
         <Button

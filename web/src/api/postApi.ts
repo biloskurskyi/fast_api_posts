@@ -11,4 +11,11 @@ export const postApi = {
     });
     return data;
   },
+  get: async (postId: number): Promise<PostDto> => {
+    const { data } = await httpClient.get<PostDto>(ENDPOINTS.post(postId));
+    return data;
+  },
+  remove: async (postId: number): Promise<void> => {
+    await httpClient.delete(ENDPOINTS.post(postId));
+  },
 };

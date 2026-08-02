@@ -6,9 +6,9 @@ import { FIRST_PAGE } from "@/constants/pagination";
 
 type PaginationParamsOptions = {
   pageKey: string;
-  sizeKey: string;
-  pageSizes: readonly number[];
   defaultPageSize: number;
+  sizeKey?: string;
+  pageSizes?: readonly number[];
 };
 
 const toPageNumber = (value: string | null): number => {
@@ -20,15 +20,16 @@ const toQueryHref = (params: URLSearchParams): `?${string}` => `?${params.toStri
 
 export const usePaginationParams = ({
   pageKey,
+  defaultPageSize,
   sizeKey,
   pageSizes,
-  defaultPageSize,
 }: PaginationParamsOptions) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const requestedPageSize = Number(searchParams.get(sizeKey));
-  const pageSize = pageSizes.includes(requestedPageSize)
+  const requestedPageSize =
+    sizeKey === undefined ? Number.NaN : Number(searchParams.get(sizeKey));
+  const pageSize = pageSizes?.includes(requestedPageSize)
     ? requestedPageSize
     : defaultPageSize;
   const page = toPageNumber(searchParams.get(pageKey));
@@ -36,7 +37,7 @@ export const usePaginationParams = ({
   const replaceParams = (nextPage: number, nextPageSize: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(pageKey, String(nextPage));
-    params.set(sizeKey, String(nextPageSize));
+    if (sizeKey !== undefined) params.set(sizeKey, String(nextPageSize));
     router.replace(toQueryHref(params), { scroll: false });
   };
 

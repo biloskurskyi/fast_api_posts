@@ -27,6 +27,8 @@
   --raw-btn-px: 20px;
   --raw-h1: 1.75rem;
   --raw-post-title: 2.5rem;
+  --raw-stat-label: 150px;
+  --raw-stat-number: 96px;
 }
 
 [data-theme="dark"] {
@@ -55,6 +57,7 @@
   :root {
     --raw-gutter: 24px;
     --raw-post-title: 2.25rem;
+    --raw-stat-label: 120px;
   }
 }
 
@@ -123,6 +126,8 @@
   --text-post-title: var(--raw-post-title);
   --text-post-title--line-height: 1.2;
 
+  --tracking-heading: 0.04em;
+
   --breakpoint-*: initial;
   --breakpoint-md: 768px;
   --breakpoint-xl: 1280px;
@@ -144,4 +149,6 @@
   --spacing-btn-h: var(--raw-btn-h);
   --spacing-btn-px: var(--raw-btn-px);
   --spacing-touch: 44px;
+  --spacing-stat-label: var(--raw-stat-label);
+  --spacing-stat-number: var(--raw-stat-number);
 }

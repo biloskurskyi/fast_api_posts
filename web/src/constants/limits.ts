@@ -7,6 +7,6 @@ export const LIMITS = {
   postContent: { min: 1, max: 10000 },
   commentInfo: { min: 1, max: 2000 },
   autoReplyText: { max: 500 },
-  autoReplyDelaySeconds: { min: 0, max: 86400 },
+  autoReplyDelaySeconds: { min: 0, max: 86400, step: 300 },
   statisticsRangeDays: { max: 90 },
 } as const;

@@ -1,0 +1,40 @@
+{
+  "title": "Automatic reply",
+  "blurb": "When someone comments on one of your posts, the server posts this reply on your behalf after the delay you choose.",
+  "state": {
+    "on": "On · replies {{phrase}}",
+    "off": "Off · no automatic replies are posted"
+  },
+  "delay": {
+    "immediately": "immediately",
+    "minutes_one": "after {{count}} minute",
+    "minutes_other": "after {{count}} minutes",
+    "hours_one": "after {{count}} hour",
+    "hours_other": "after {{count}} hours",
+    "hoursAndMinutes": "after {{hours}} h {{minutes}} min"
+  },
+  "fields": {
+    "enabled": {
+      "label": "Automatic reply"
+    },
+    "text": {
+      "label": "Reply text",
+      "placeholder": "thanks for the comment!",
+      "counter": "{{current}} / {{max}}"
+    },
+    "delay": {
+      "label": "Delay",
+      "ticks": {
+        "start": "Immediately",
+        "middle": "1 hour",
+        "end": "24 hours"
+      }
+    }
+  },
+  "actions": {
+    "save": "Save"
+  },
+  "feedback": {
+    "saved": "Saved."
+  }
+}

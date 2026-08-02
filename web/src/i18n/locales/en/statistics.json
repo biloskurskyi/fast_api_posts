@@ -1,0 +1,36 @@
+{
+  "title": "Comment statistics",
+  "blurb": "Comments left on your own posts, day by day.",
+  "fields": {
+    "dateFrom": {
+      "label": "From"
+    },
+    "dateTo": {
+      "label": "To"
+    }
+  },
+  "actions": {
+    "show": "Show"
+  },
+  "legend": {
+    "total": "Total",
+    "blocked": "Blocked",
+    "note": "Totals count blocked comments and the automatic replies posted on your behalf."
+  },
+  "table": {
+    "caption": "Comments on your posts, one row per day",
+    "columns": {
+      "day": "Day",
+      "activity": "Activity",
+      "counts": "Total and blocked"
+    }
+  },
+  "row": {
+    "counts": "{{total}} · {{blocked}}"
+  },
+  "grandTotal": "{{comments}} comments across {{days}} days · {{blocked}} blocked",
+  "empty": {
+    "title": "No comments in this range.",
+    "description": "Nobody commented on your posts between these dates."
+  }
+}

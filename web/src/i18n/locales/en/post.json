@@ -1,0 +1,42 @@
+{
+  "title": "Post",
+  "backToFeed": "← Feed",
+  "meta": {
+    "author": "User #{{id}}"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "dismiss": "Dismiss"
+  },
+  "confirmDelete": {
+    "message": "Delete this post and its comments? This can't be undone.",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+  "notFound": {
+    "title": "Post not found",
+    "description": "It may have been deleted by its author.",
+    "action": "Back to the feed"
+  },
+  "comments": {
+    "heading": "Comments",
+    "empty": "No comments yet.",
+    "counter": "{{length}} / {{max}}",
+    "blockedBadge": "Blocked · only you can see this",
+    "blockedNotice": "Your comment was flagged, so only you can see it. Edit it and save to have it checked again.",
+    "composer": {
+      "label": "Your comment",
+      "placeholder": "Write a comment…",
+      "submit": "Post comment"
+    },
+    "edit": {
+      "save": "Save & re-check"
+    },
+    "signInPrompt": {
+      "title": "Sign in to join the discussion.",
+      "action": "Sign in"
+    }
+  }
+}

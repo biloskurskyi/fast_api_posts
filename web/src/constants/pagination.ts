@@ -10,3 +10,8 @@ export const FEED_PAGINATION = {
 } as const;
 
 export const COMMENT_THREAD_PAGE_SIZE = 20;
+
+export const COMMENT_THREAD_PAGINATION = {
+  pageKey: "commentsPage",
+  defaultPageSize: COMMENT_THREAD_PAGE_SIZE,
+} as const;

@@ -4,6 +4,8 @@
   },
   "nav": {
     "feed": "Feed",
+    "autoReply": "Auto-reply",
+    "statistics": "Statistics",
     "ariaLabel": "Main navigation"
   },
   "health": {
@@ -20,7 +22,11 @@
     "close": "Close menu"
   },
   "actions": {
-    "retry": "Try again"
+    "retry": "Try again",
+    "dismiss": "Dismiss"
+  },
+  "notices": {
+    "postDeleted": "Post deleted."
   },
   "pagination": {
     "ariaLabel": "Pagination",

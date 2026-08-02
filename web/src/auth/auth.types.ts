@@ -6,6 +6,7 @@ export type AccessTokenClaims = {
 export type AuthContextValue = {
   userId: number | null;
   isAuthenticated: boolean;
+  isSessionResolved: boolean;
   hasSessionExpiredNotice: boolean;
   signIn: (token: string) => void;
   signOut: () => void;
