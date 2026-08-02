@@ -1,18 +1,13 @@
 import axios, { type AxiosError } from "axios";
 
 import { decodeAccessToken, isExpired } from "@/auth/accessToken";
-import { emitSessionExpired } from "@/auth/authEvents";
-import { clearAccessToken, readAccessToken } from "@/auth/tokenStorage";
+import { endSession } from "@/auth/endSession";
+import { readAccessToken } from "@/auth/tokenStorage";
 import { API_BASE_URL } from "@/constants/endpoints";
 import { SESSION_ENDING_ERROR_CODES } from "@/errors/errorCodes";
 import { toApiError } from "@/errors/toApiError";
 
 const sessionEndingCodes: readonly string[] = SESSION_ENDING_ERROR_CODES;
-
-const endSession = () => {
-  clearAccessToken();
-  emitSessionExpired();
-};
 
 export const httpClient = axios.create({ baseURL: API_BASE_URL });
 

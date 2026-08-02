@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 import { FOCUS_RING } from "@/components/controlStyles";
 import { ROUTES } from "@/constants/routes";
+import { SessionMenu } from "@/parts/auth/SessionMenu";
 
 import { AppNavigation } from "./AppNavigation";
 import { MobileNavigationMenu } from "./MobileNavigationMenu";
@@ -31,6 +32,9 @@ export const AppHeader = () => {
             <ServerHealthLabel />
           </span>
           <ThemeToggle />
+          <span className="hidden md:inline">
+            <SessionMenu />
+          </span>
           <MobileNavigationMenu />
         </div>
       </div>

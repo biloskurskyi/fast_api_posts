@@ -9,6 +9,7 @@ import { FOCUS_RING } from "@/components/controlStyles";
 import { MenuIcon } from "@/components/MenuIcon";
 import { NavPill } from "@/components/NavPill";
 import { PUBLIC_NAV_ITEMS } from "@/constants/navigation";
+import { SessionMenu } from "@/parts/auth/SessionMenu";
 
 import { ServerHealthLabel } from "./ServerHealthLabel";
 
@@ -46,6 +47,7 @@ export const MobileNavigationMenu = () => {
               />
             ))}
           </nav>
+          <SessionMenu onAfterAction={closeMenu} />
           <ServerHealthLabel />
         </Popover.Content>
       </Popover.Portal>

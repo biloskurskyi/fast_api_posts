@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { parseValidationMessage } from "@/mappers/validationError.mapper";
+
 import type { ApiError, ApiErrorCode } from "./apiError.types";
 import { BACKEND_ERROR_CODES } from "./errorCodes";
 
@@ -28,10 +30,18 @@ export const toApiError = (
   }
 
   const envelope = errorEnvelopeSchema.safeParse(payload);
-  const code =
-    envelope.success && isBackendErrorCode(envelope.data.error.code)
-      ? envelope.data.error.code
-      : "unknown_error";
+  if (!envelope.success) {
+    return { code: "unknown_error", status, fieldErrors: null, formError: null };
+  }
 
-  return { code, status, fieldErrors: null, formError: null };
+  const { code, message } = envelope.data.error;
+  if (!isBackendErrorCode(code)) {
+    return { code: "unknown_error", status, fieldErrors: null, formError: null };
+  }
+
+  if (code !== "validation_error") {
+    return { code, status, fieldErrors: null, formError: null };
+  }
+
+  return { code, status, ...parseValidationMessage(message) };
 };
