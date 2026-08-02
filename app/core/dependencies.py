@@ -35,3 +35,12 @@ def get_current_user(
         raise unauthenticated(ErrorCode.INACTIVE_USER, "This account is deactivated")
 
     return user
+
+
+def get_viewer(
+    token: Annotated[str | None, Depends(oauth2_scheme)],
+    db: Annotated[Session, Depends(get_db)],
+) -> User | None:
+    if token is None:
+        return None
+    return get_current_user(token, db)
