@@ -4,7 +4,9 @@ from typing import Annotated
 from fastapi import Depends
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
+from app.llm.factory import get_llm_provider
 from app.models.comment import Comment
 from app.models.post import Post
 from app.models.scheduled_reply import ScheduledReply
@@ -13,6 +15,7 @@ from app.repositories.comment_repository import CommentRepository
 from app.repositories.scheduled_reply_repository import ScheduledReplyRepository
 from app.schemas.auto_reply import AutoReplySettingsWrite
 from app.services.moderation_service import blocked_at_for
+from app.services.reply_composer import ReplyComposer
 
 
 class AutoReplyService:
@@ -20,6 +23,7 @@ class AutoReplyService:
         self.db = db
         self.replies = ScheduledReplyRepository(db)
         self.comments = CommentRepository(db)
+        self.composer = ReplyComposer(get_llm_provider(settings))
 
     def update_settings(self, user: User, data: AutoReplySettingsWrite) -> User:
         user.auto_reply_enabled = data.auto_reply_enabled
@@ -51,7 +55,7 @@ class AutoReplyService:
         owner = reply.comment.post.owner
         if not self.is_configured(owner):
             return
-        info = f"{reply.comment.owner.username}, {owner.auto_reply_text}"
+        info = self.composer.compose(reply)
         self.comments.add(
             Comment(
                 info=info,

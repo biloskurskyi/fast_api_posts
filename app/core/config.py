@@ -14,6 +14,10 @@ class Settings(BaseSettings):
     auto_reply_poll_interval_seconds: int = 5
     auto_reply_batch_size: int = 100
     max_request_body_bytes: int = 1_048_576
+    llm_provider: str = "none"
+    llm_model: str = "gpt-4o-mini"
+    llm_timeout_seconds: float = 5
+    llm_max_retries: int = 2
 
 
 settings = Settings()
