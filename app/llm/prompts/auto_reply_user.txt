@@ -1,0 +1,12 @@
+Post title: $post_title
+
+Post body:
+$post_body
+
+Author's reply template:
+$owner_template
+
+Commenter: $commenter_username
+<comment>
+$comment_text
+</comment>
