@@ -9,7 +9,7 @@ jobs:
     env:
       DEPLOY_HOOK_URL: ${{ secrets.DEPLOY_HOOK_URL }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build image
         run: docker build .
       - name: Trigger deploy hook
