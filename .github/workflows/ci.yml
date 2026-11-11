@@ -26,7 +26,7 @@ jobs:
       DATABASE_URL: postgresql+psycopg://app_user:ci_password@localhost:5432/app_db
       SECRET_KEY: ci-only-secret-key-with-at-least-32-characters
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -41,7 +41,7 @@ jobs:
       run:
         working-directory: web
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v4
         with:
           version: 11.18.0
